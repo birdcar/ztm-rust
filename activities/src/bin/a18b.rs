@@ -22,4 +22,58 @@
 // * Print whether the employee may access the building
 //   * Must use a function that utilizes the question mark operator to do this
 
-fn main() {}
+#[derive(Debug)]
+enum Department {
+  Maintenance,
+  Managers,
+  Marketing,
+  LineSupervisors,
+  Kitchen,
+  AssemblyTechnicians,
+}
+
+#[derive(Debug)]
+enum Status {
+  Active,
+  Terminated,
+}
+
+#[derive(Debug)]
+struct Employee {
+  name: String,
+  dept: Department,
+  status: Status,
+}
+
+fn try_access(emp: &Employee) -> Result<(), String> {
+  match emp.status {
+    Status::Terminated => return Err("Terminated".to_owned()),
+    _ => (),
+  }
+
+  match emp.dept {
+    Department::Maintenance => Ok(()),
+    Department::Managers => Ok(()),
+    Department::Marketing => Ok(()),
+    _ => Err("Access Denied".to_owned()),
+  }
+}
+
+fn print_access(emp: &Employee) -> Result<(), String> {
+  let attempt_access = try_access(emp)?;
+  println!("Access ok!");
+  Ok(attempt_access)
+}
+
+fn main() {
+  let emp = Employee {
+    name: String::from("Nick"),
+    dept: Department::Managers,
+    status: Status::Terminated,
+  };
+
+  match print_access(&emp) {
+    Err(e) => println!("Error: {:?}", e),
+    _ => (),
+  }
+}
