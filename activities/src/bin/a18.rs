@@ -11,4 +11,32 @@
 // * Return a result from the function
 // * The Err variant should detail the reason why they cannot make a purchase
 
-fn main() {}
+#[derive(Debug)]
+struct Customer {
+  name: String,
+  age: u8,
+}
+
+fn card_customer(customer: &Customer) -> Result<(), String> {
+  if customer.age < 21 {
+    Err("Customer must be at least 21 years old".to_owned())
+  } else {
+    Ok(())
+  }
+}
+
+fn main() {
+  let katie = Customer {
+    name: String::from("Katie"),
+    age: 32,
+  };
+  let katie_purchase = card_customer(&katie);
+  println!("{:?}", katie_purchase);
+
+  let jay = Customer {
+    name: String::from("Jay"),
+    age: 10,
+  };
+  let jay_purchase = card_customer(&jay);
+  println!("{:?}", jay_purchase);
+}
